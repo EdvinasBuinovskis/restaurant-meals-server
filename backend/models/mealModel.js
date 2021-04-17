@@ -7,7 +7,7 @@ const mealSchema = new mongoose.Schema({
     protein: { type: Number, required: true },
     fat: { type: Number, required: true },
     carbohydrates: { type: Number, required: true },
-    serving_weight: { type: Number },
+    servingWeight: { type: Number },
     approved: { type: Boolean, default: false },
     createdBy: { type: String }
 }, {

@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import mealRouter from './routers/mealRouter.js';
 import restaurantRouter from './routers/restaurantRouter.js';
 import userRouter from './routers/userRouter.js'
+import favoriteRouter from './routers/favoriteRoute.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/restaurant-meal
 app.use('/api/meals', mealRouter);
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/users', userRouter);
+app.use('/api/favorites', favoriteRouter);
 
 app.get('/', (req, res) => {
     res.send('Server is ready');

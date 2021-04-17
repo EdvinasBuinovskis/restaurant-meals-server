@@ -33,7 +33,7 @@ mealRouter.post('/', isAuth,
             protein: req.body.protein,
             fat: req.body.fat,
             carbohydrates: req.body.carbohydrates,
-            serving_weight: req.body.serving_weight,
+            servingWeight: req.body.servingWeight,
             createdBy: req.body.createdBy
         });
         const createdMeal = await meal.save();
@@ -41,6 +41,39 @@ mealRouter.post('/', isAuth,
             res.status(201).send({ message: 'New Meal Added', meal: createdMeal });
         } else {
             res.status(500).send({ message: 'Error in Adding Meal.' });
+        }
+    })
+);
+
+mealRouter.put('/:id', isAuth,
+    expressAsyncHandler(async (req, res) => {
+        const meal = await Meal.findById(req.params.id);
+        if (meal && meal.createdBy === req.user._id) {
+            meal.name = req.body.name || meal.name;
+            meal.restaurant_id = req.body.restaurant_id || meal.restaurant_id;
+            meal.kcal = req.body.kcal || meal.kcal;
+            meal.protein = req.body.protein || meal.protein;
+            meal.fat = req.body.fat || meal.fat;
+            meal.carbohydrates = req.body.carbohydrates || meal.carbohydrates;
+            meal.servingWeight = req.body.servingWeight || meal.servingWeight;
+            meal.createdBy;
+            const updatedMeal = await meal.save();
+            res.send({ message: 'Meal Updated', meal: updatedMeal });
+        } else {
+            res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
+        }
+    })
+);
+
+mealRouter.delete('/:id', isAuth,
+    expressAsyncHandler(async (req, res) => {
+        const meal = await Meal.findById(req.params.id);
+        if (meal && meal.createdBy === req.user._id) {
+            const deleteMeal = await meal.remove();
+            res.send({ message: 'Meal Deleted', meal: deleteMeal });
+        }
+        else {
+            res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
         }
     })
 );
