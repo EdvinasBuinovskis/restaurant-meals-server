@@ -9,7 +9,8 @@ const mealSchema = new mongoose.Schema({
     carbohydrates: { type: Number, required: true },
     servingWeight: { type: Number },
     approved: { type: Boolean, default: false },
-    createdBy: { type: String }
+    createdBy: { type: String },
+    image: { type: String }
 }, {
     timestamps: true
 });

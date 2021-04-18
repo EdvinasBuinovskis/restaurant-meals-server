@@ -34,7 +34,8 @@ mealRouter.post('/', isAuth,
             fat: req.body.fat,
             carbohydrates: req.body.carbohydrates,
             servingWeight: req.body.servingWeight,
-            createdBy: req.body.createdBy
+            createdBy: req.body.createdBy,
+            image: req.body.image
         });
         const createdMeal = await meal.save();
         if (createdMeal) {
@@ -57,6 +58,7 @@ mealRouter.put('/:id', isAuth,
             meal.carbohydrates = req.body.carbohydrates || meal.carbohydrates;
             meal.servingWeight = req.body.servingWeight || meal.servingWeight;
             meal.createdBy;
+            meal.image = req.body.image || meal.image;
             const updatedMeal = await meal.save();
             res.send({ message: 'Meal Updated', meal: updatedMeal });
         } else {

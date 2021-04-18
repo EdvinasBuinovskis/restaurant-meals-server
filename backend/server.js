@@ -6,6 +6,8 @@ import restaurantRouter from './routers/restaurantRouter.js';
 import userRouter from './routers/userRouter.js'
 import favoriteRouter from './routers/favoriteRoute.js';
 import dotenv from 'dotenv';
+import path from 'path';
+import uploadRouter from './routers/uploadRouter.js';
 
 dotenv.config();
 
@@ -22,6 +24,10 @@ app.use('/api/meals', mealRouter);
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/users', userRouter);
 app.use('/api/favorites', favoriteRouter);
+app.use('/api/uploads', uploadRouter);
+
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.get('/', (req, res) => {
     res.send('Server is ready');
