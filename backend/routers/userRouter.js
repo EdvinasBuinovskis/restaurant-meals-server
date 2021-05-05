@@ -2,7 +2,8 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
-import { generateToken } from '../utilities.js'
+import { generateToken } from '../utilities.js';
+import { isAdmin, isAuth } from '../utilities.js';
 
 const userRouter = express.Router();
 
@@ -32,17 +33,21 @@ userRouter.post('/register',
             password: bcrypt.hashSync(req.body.password, 8)
         });
         const createdUser = await user.save();
-        res.send({
-            _id: createdUser.id,
-            username: createdUser.username,
-            email: createdUser.email,
-            isAdmin: createdUser.isAdmin,
-            token: generateToken(createdUser)
-        });
+        if (createdUser) {
+            res.send({
+                _id: createdUser.id,
+                username: createdUser.username,
+                email: createdUser.email,
+                isAdmin: createdUser.isAdmin,
+                token: generateToken(createdUser)
+            });
+        } else {
+            res.status(500).send({ message: 'Failed to Register' });
+        }
     })
 );
 
-userRouter.get('/:id',
+userRouter.get('/:id', isAuth, isAdmin,
     expressAsyncHandler(async (req, res) => {
         const user = await User.findById(req.params.id);
         if (user) {

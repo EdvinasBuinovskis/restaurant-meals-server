@@ -16,7 +16,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 uploadRouter.post('/', isAuth, upload.single('image'), (req, res) => {
-    res.send(`/${req.file.path}`);
+    if (req.file.path) {
+        res.send(`/${req.file.path}`);
+    }
+    else {
+        res.status(500).send({ message: 'Image not saved' });
+    }
+
 });
 
 export default uploadRouter;
