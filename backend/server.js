@@ -8,6 +8,9 @@ import favoriteRouter from './routers/favoriteRoute.js';
 import dotenv from 'dotenv';
 import path from 'path';
 import uploadRouter from './routers/uploadRouter.js';
+import cors from 'cors';
+
+app.use(cors());
 
 dotenv.config();
 
