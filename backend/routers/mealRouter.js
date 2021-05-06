@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Meal from '../models/mealModel.js'
-import { isAuth } from '../utilities.js';
+import { isAdmin, isAuth } from '../utilities.js';
 
 const mealRouter = express.Router();
 
@@ -75,6 +75,19 @@ mealRouter.delete('/:id', isAuth,
             res.send({ message: 'Meal Deleted', meal: deleteMeal });
         }
         else {
+            res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
+        }
+    })
+);
+
+mealRouter.put('/:id/changeApprove', isAuth, isAdmin,
+    expressAsyncHandler(async (req, res) => {
+        const meal = await Meal.findById(req.params.id);
+        if (meal) {
+            meal.approved = !meal.approved;
+            const updatedMeal = await meal.save();
+            res.send({ message: 'Meal Approve Changed', meal: updatedMeal });
+        } else {
             res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
         }
     })
