@@ -13,7 +13,12 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+var corsOptions = {
+    origin: process.env.ORIGIN || 'http://localhost:3000',
+    optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost/restaurant-meals-website', {
