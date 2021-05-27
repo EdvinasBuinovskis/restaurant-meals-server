@@ -62,7 +62,7 @@ mealRouter.put('/:id', isAuth,
             const updatedMeal = await meal.save();
             res.send({ message: 'Meal Updated', meal: updatedMeal });
         } else {
-            res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
+            res.status(404).send({ message: 'Meal Not Found' });
         }
     })
 );
@@ -75,7 +75,7 @@ mealRouter.delete('/:id', isAuth,
             res.send({ message: 'Meal Deleted', meal: deleteMeal });
         }
         else {
-            res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
+            res.status(404).send({ message: 'Meal Not Found' });
         }
     })
 );
@@ -88,7 +88,7 @@ mealRouter.put('/:id/changeApprove', isAuth, isAdmin,
             const updatedMeal = await meal.save();
             res.send({ message: 'Meal Approve Changed', meal: updatedMeal });
         } else {
-            res.status(404).send({ message: 'Meal Not Found / Unauthorized' });
+            res.status(404).send({ message: 'Meal Not Found' });
         }
     })
 );

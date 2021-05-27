@@ -1,4 +1,5 @@
 import express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import { isAuth } from '../utilities.js';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
@@ -12,16 +13,18 @@ cloudinary.config({
     api_secret: process.env.API_SECRET
 });
 
-uploadRouter.post('/', isAuth, async (req, res) => {
-    const fileStr = req.body.data;
-    const response = await cloudinary.v2.uploader.upload(fileStr, { upload_preset: process.env.UPLOAD_PRESET });
+uploadRouter.post('/', isAuth,
+    expressAsyncHandler(async (req, res) => {
+        const fileStr = req.body.data;
+        const response = await cloudinary.v2.uploader.upload(fileStr, { upload_preset: process.env.UPLOAD_PRESET });
 
-    if (response) {
-        res.send(response.public_id);
-    }
-    else {
-        res.status(500).send({ message: 'Image not saved' });
-    }
-});
+        if (response) {
+            res.send(response.public_id);
+        }
+        else {
+            res.status(500).send({ message: 'Image not saved' });
+        }
+    })
+);
 
 export default uploadRouter;

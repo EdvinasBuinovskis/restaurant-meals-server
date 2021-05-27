@@ -28,7 +28,7 @@ favoriteRouter.post('/', isAuth,
                 favorites: updatedFavorites.favorites
             });
         } else if (user.favorites.includes(req.body.favorite)) {
-            res.status(404).send({ message: 'Favorite Already Added' });
+            res.status(400).send({ message: 'Favorite Already Added' });
         } else {
             res.status(404).send({ message: 'User Not Found' });
         }
@@ -45,7 +45,7 @@ favoriteRouter.delete('/', isAuth,
                 favorites: updatedFavorites.favorites
             });
         } else if (!user.favorites.includes(req.body.favorite)) {
-            res.status(404).send({ message: 'Favorite Already Removed' });
+            res.status(400).send({ message: 'Favorite Already Removed' });
         } else {
             res.status(404).send({ message: 'User Not Found' });
         }
